@@ -1,0 +1,88 @@
+<div class="row">
+<div class="col col-sm4">
+<legend>User Profile</legend>
+  <label class="col-sm-2 control-label" for="textinput">Name: {{loginUser.fullName}}</label>
+</div>
+<div class="col col-sm4">
+  <label class="col-sm-2 control-label" for="textinput">E-Mail: {{loginUser.emailAddress}}</label>
+</div>
+<div class="col col-sm4">
+  <label class="col-sm-2 control-label" for="textinput">Mobile Number: {{loginUser.mobileNumber}}</label>
+</div>
+</div>
+
+<div class="row">
+    <div class="col">
+      <form class="form-horizontal" role="form">
+        <fieldset>
+          <!-- Form Name -->
+          <legend>Add Delivery Address</legend>
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Address Line 1</label>
+            <div class="col-sm-10">
+              <input type="text" placeholder="Flat / House No./ Floor / Building" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Address Line 2</label>
+            <div class="col-sm-10">
+              <input type="text" placeholder="Appartment / Street / Community / Locality" class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Landmark</label>
+            <div class="col-sm-10">
+              <input type="text" placeholder="Eg.Near Some Shop,Next to some temple  " class="form-control">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="textinput">Area</label>
+            <div class="col-sm-4">
+              <select name="Area" placeholder="Area" class="form-control">
+                <option value="Velachery">Velachery</option>
+                <option value="Pallikaranai">Pallikaranai</option>
+                <option value="Medavakkam">Medavakkam</option>
+                <option value="Perumbakkam">Perumbakkam</option>
+                <option value="S.Kolathur">S.Kolathur</option>
+              </select>
+            </div>
+            <label class="col-sm-2 control-label" for="textinput">Pincode</label>
+            <div class="col-sm-4">
+              <input type="text" placeholder="Pincode" class="form-control">
+            </div>
+          </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="textinput">Location on Map</label>
+              <div class="col-sm-4">
+                <input type="text" placeholder="Location" class="form-control">
+              </div>
+              <button class="btn btn-danger">Select location on Map</button>
+
+            </div>
+
+            <div class="form-group">
+
+          </div>
+
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="pull-right">
+                <button type="submit" class="btn btn-default">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+    </div><!-- /.col-lg-12 -->
+</div><!-- /.row -->

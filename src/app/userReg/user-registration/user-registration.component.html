@@ -1,0 +1,71 @@
+<div class="modal fade login-register-form" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="modalClose" class="close" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" data-target="#login-form"> Login <span class="glyphicon glyphicon-user"></span></a></li>
+                    <li><a data-toggle="tab" data-target="#registration-form"> Register <span class="glyphicon glyphicon-pencil"></span></a></li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div id="login-form" class="tab-pane fade in active">
+                        <form action="/" [formGroup]="loginForm">
+                            <div class="form-group">
+                                <!-- <label for="mobile" >Mobile Number:</label> -->
+                                <input class="form-control" type="tel" formControlName="mobileNumber" [(ngModel)]="loginModel.mobileNumber" placeholder="Enter Mobile Number" name="mobile">
+                            </div>
+                            <div class="form-group">
+                                <!-- <label for="pwd">Password:</label> -->
+                                <input type="password" class="form-control" formControlName="password" [(ngModel)]="loginModel.password" id="pwd" placeholder="Enter password" name="pwd">
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" name="remember" (click)="remeberMe($event)">Remember me</label>
+                            </div>
+                            <button type="submit" class="btn btn-danger" (click)="login()">Login</button>
+                        </form>
+                    </div>
+                    <div id="registration-form" class="tab-pane fade">
+                        <form action="/" [formGroup]="registrationForm">
+                            <div class="form-group" [hidden]="regSuccesful">
+                                <!-- <label for="name">Your Name:</label> -->
+                                <input type="text" required class="form-control" formControlName="userName"[(ngModel)]="registrationModel.fullName" placeholder="Enter your full name" name="userName" pattern="[a-zA-Z]*">
+                            </div>
+                            <div class="form-group" [hidden]="regSuccesful">
+                                <!-- <label for="newMobile">EMail Address:</label> -->
+                                <input type="email" required class="form-control" formControlName="newEmail" [(ngModel)]="registrationModel.emailAddress" placeholder="Enter Email Address" name="newEmail">
+                            </div>
+                            <div class="form-group" [hidden]="regSuccesful">
+                                <!-- <label for="newMobile">Mobile Number:</label> -->
+                                <input type="text" required class="form-control" formControlName="newMobile" [(ngModel)]="registrationModel.mobileNumber" pattern="[0-9]" maxlength="10" placeholder="Enter mobile number" name="newMobile">
+                            </div>
+                            <div class="form-group" [hidden]="regSuccesful">
+                                <!-- <label for="newpwd">Password:</label> -->
+                                <input type="password" required class="form-control" formControlName="newpwd" [(ngModel)]="registrationModel.password" placeholder="New password" name="newpwd">
+                            </div>
+                            <div class="form-group" [hidden]="!regSuccesful">
+                              <input type="text" [(ngModel)]="activationModel.mobileNumber" disabled class="FormControl" formControlName="regMobile">
+                            </div>
+                            <div class="form-group" [hidden]="!regSuccesful">
+                              <input type="text" [(ngModel)]="activationModel.otp" placeholder="Enter OTP" class="FormControl" formControlName="otp">
+                            </div>
+                            <div class="form-group" [hidden]="!regSuccesful">
+                            <button type="submit" class="btn btn-info" (click)="activate()">Activate</button>
+                          </div>
+                          <div class="form-group" [hidden]="regSuccesful">
+                            <button type="submit" class="btn btn-danger" (click)="register()">Register</button>
+                          </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+<!--                                    <div class="modal-footer">-->
+<!--                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--                                    </div>-->
+        </div>
+    </div>
+</div>

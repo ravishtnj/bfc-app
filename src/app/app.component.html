@@ -1,3 +1,303 @@
-<h1>
-  {{title}}
-</h1>
+    <!-- Side Menu -->
+<a id="menu-toggle" href="#" (click)="toggleClass()" class="btn btn-primary btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <div id="sidebar-wrapper" [class.active]="menuActive" (click)="toggleClass()">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li><a href="#top">Home</a>
+            </li>
+            <li class="sidebar-brand"><a href="#process">How we work</a>
+            </li>
+            <li><a href="#concept">Concept</a>
+            </li>
+          <!--  <li><a href="#about">About</a>
+          </li>  -->
+            <li><a href="#track">Track My Order</a>
+            </li>
+            <!-- <li><a href="#portfolio">Portfolio</a>
+            </li> -->
+            <li><a href="#contact">Customer Service</a>
+            </li>
+            <li [hidden]="!isUserLoggedin"><a href="#userProfile">User Profile</a>
+            </li>
+            <li [hidden]="!isUserLoggedin"><button class="btn btn-success" (click)="logoutApp($event)">logout</button>
+            </li>
+        </ul>
+    </div>
+    <!-- /Side Menu -->
+
+    <!-- Full Page Image Header Area -->
+    <div id="top" class="header" [style.height]="heightValue" >
+        <div class="vert-text">
+          <!-- <div class="row"><div class="col col-12"><span><h4><em>New User </em><button type="button" class="btn btn-primary btn-lg" (click)="registerUser()">Register</button> <em>Returning User </em> <button type="button" class="btn btn-secondary btn-lg">Login</button></h4></span></div></div> -->
+          <div class="container" >
+          	<div class="row" [hidden]='isUserLoggedin'>
+                                  <!-- Signin & Signup -->
+                                  <button class="btn btn-primary" href="#" data-toggle="modal" data-target=".login-register-form">
+                                    New User Registration
+                                  </button>
+                                  <button class="btn btn-secondary" href="#" data-toggle="modal" data-target=".login-register-form">
+                                   Login
+                                 </button>
+                                 <app-user-registration #userReg (loginUserDataEmit)='handleloginUserDataEmitEvent($event)'></app-user-registration>
+                                  <!-- Login / Register Modal-->
+          	</div>
+            <div class="row" [hidden]='!isUserLoggedin'>
+            <h3> Welcome, {{loginUserModel.fullname}}! </h3>
+            </div>
+          </div>
+                      <h1>Order your Breakfast</h1>
+            <h3>
+                <em>We</em> will bring it to your doorstep,
+                <em>You</em> Just dont skip it</h3>
+
+            <a href="#Order" class="btn btn-default btn-lg">Place your Order</a>
+        </div>
+    </div>
+    <!-- /Full Page Image Header Area -->
+
+ <!-- Order -->
+    <div id="Order" class="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <h2>South Indian Breakfast</h2>
+                    <hr>
+                </div>
+            </div>
+                <div class="row" >
+                 <div class="col-md-2 col-md-offset-1 text-center" *ngFor="let item of menuListCollection; let i = index">
+                    <div class="service-item">
+                        <a href="#">
+                            <img class="img-portfolio img-responsive" src="../assets/img/{{item.itemId}}.jpg">
+                        </a>
+                        <h4>Menu {{i+1}}</h4>
+                        <div class="service-item">
+                            <p style="text-align: left;"><b>{{item.itemName}}</b></p>
+                               <ul style="text-align: left;">
+                                   <li>{{item.component1}}</li>
+                                   <li>{{item.component2}}</li>
+                                   <li>{{item.component3}}</li>
+                                   <li>{{item.component4}}</li>
+                                   <li>{{item.component5}}</li>
+                               </ul>
+                               <button class="btn btn-primary" (click)="makeOrder(item)">Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" [style.display]="showOrderSummary">
+              <div class="col-md-8 col-md-offset-2 text-center">
+                  <h2>Order Summary</h2>
+                  <hr>
+              </div>
+       <div class="col-sm-12 col-md-10 col-md-offset-1">
+           <table class="table table-hover">
+               <thead>
+                   <tr>
+                       <th>Product</th>
+                       <th>Quantity</th>
+                       <th class="text-center">Unit Price</th>
+                       <th class="text-center">Total</th>
+                       <th> </th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <tr *ngFor="let item of orderModel.items, let i=index">
+                       <td class="col-sm-8 col-md-6">
+                       <div class="media">
+                           <a class="thumbnail pull-left" href="#"> <img class="media-object" src="../assets/img/{{item.orderItem.itemId}}.jpg" style="width: 72px; height: 72px;"> </a>
+                           <div class="media-body">
+                             <br>
+                               <h4 class="media-heading"><a href="#">{{item.orderItem.itemName}}</a></h4>
+                           </div>
+                       </div></td>
+                       <td class="col-sm-1 col-md-1" style="text-align: center">
+                       <input type="number" (change)="calculateCost(item,$event)" min="1" max="100" id="qty" class="form-control" [value]="item.quantity">
+                       </td>
+                       <td class="col-sm-1 col-md-1 text-center"><strong>{{item.orderItem.itemPrice}}</strong></td>
+                       <td class="col-sm-1 col-md-1 text-center"><strong>{{item.amount}}</strong></td>
+                       <td class="col-sm-1 col-md-1">
+                       <button type="button" class="btn btn-danger" (click)="removeOrderObj(i)">
+                           <span class="glyphicon glyphicon-remove"></span> Remove
+                       </button></td>
+                   </tr>
+                   <tr>
+                       <td>   </td>
+                       <td>   </td>
+                       <td>   </td>
+                       <td><h5>Subtotal</h5></td>
+                       <td class="text-right"><h5><i class="fa fa-inr"></i><strong> {{subTotalAmount}}</strong></h5></td>
+                   </tr>
+                   <tr>
+                       <td>   </td>
+                       <td>   </td>
+                       <td>   </td>
+                       <td><h5>GST @ 12%</h5></td>
+                       <td class="text-right"><h5><i class="fa fa-inr"></i><strong> {{taxAmount}}</strong></h5></td>
+                   </tr>
+                   <tr>
+                       <td>   </td>
+                       <td>   </td>
+                       <td>   </td>
+                       <td><h3>Total</h3></td>
+                       <td class="text-right"><h3><i class="fa fa-inr"></i><strong> {{totalAmount}}</strong></h3></td>
+                   </tr>
+                   <tr>
+                       <td>   </td>
+                       <td>   </td>
+                       <td>   </td>
+                       <td>
+                       <!-- <button type="button" class="btn btn-default">
+                           <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
+                       </button>-->
+                     </td>
+                       <td>
+                       <button type="button" class="btn btn-success">
+                           Proceed to Pay <span class="glyphicon glyphicon-play"></span>
+                       </button></td>
+                   </tr>
+               </tbody>
+           </table>
+       </div>
+   </div>
+        </div>
+    </div>
+    <!-- /Order -->
+
+    <!-- Intro -->
+    <div id="track" class="intro">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <h2>Track your Order</h2>
+                    <input type="text" class="FormControl" placeholder="Order Number">
+                    <button type="button" class="btn btn-success" (click)="trackOrder()">Track</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Intro -->
+
+
+    <div id="concept" class="services">
+    <div class="container">
+        <div class="row">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                <h2>Why do we serve local foods in this age of tech ?</h2>
+                    <p class="lead">Well, your body is somehow expects the food fits to the climate and metabolism., eating local foods like Idly, Dosa keeps you in the cirle of better eating, which can be easily understood by your body. <br>
+                    Secondly, this local foods are freshly perpared and reach you within an hour.
+                    </p>
+                </div>
+        </div>
+    </div>
+    </div>
+
+
+    <!-- Services -->
+    <div id="userProfile" class="services" ><!-- [hidden]='!isUserLoggedin' -->
+      <div class="container"  >
+          <app-user-profile></app-user-profile>
+      </div>
+        <!-- <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                    <h2>Our Services</h2>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-md-offset-2 text-center">
+                    <div class="service-item">
+                        <i class="service-icon fa fa-rocket"></i>
+                        <h4>Spacecraft Repair</h4>
+                        <p>Did your navigation system shut down in the middle of that asteroid field? We can repair any dings and scrapes to your spacecraft!</p>
+                    </div>
+                </div>
+                <div class="col-md-2 text-center">
+                    <div class="service-item">
+                        <i class="service-icon fa fa-magnet"></i>
+                        <h4>Problem Solving</h4>
+                        <p>Need to know how magnets work? Our problem solving solutions team can help you identify problems and conduct exploratory research.</p>
+                    </div>
+                </div>
+                <div class="col-md-2 text-center">
+                    <div class="service-item">
+                        <i class="service-icon fa fa-shield"></i>
+                        <h4>Blacksmithing</h4>
+                        <p>Planning a time travel trip to the middle ages? Preserve the space time continuum by blending in with period accurate armor and weapons.</p>
+                    </div>
+                </div>
+                <div class="col-md-2 text-center">
+                    <div class="service-item">
+                        <i class="service-icon fa fa-pencil"></i>
+                        <h4>Pencil Sharpening</h4>
+                        <p>We've been voted the best pencil sharpening service for 10 consecutive years. If you have a pencil that feels dull, we'll get it sharp!</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <!-- /Services -->
+
+    <!-- Callout -->
+    <div class="callout">
+        <div class="vert-text">
+            <h1>A Dramatic Text Area</h1>
+        </div>
+    </div>
+    <!-- /Callout -->
+
+
+
+    <!-- Call to Action -->
+    <div class="call-to-action">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <h3>The buttons below are impossible to resist.</h3>
+                    <a href="#" class="btn btn-lg btn-default">Click Me!</a>
+                    <a href="#" class="btn btn-lg btn-primary">Look at Me!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Call to Action -->
+
+    <!-- Map -->
+    <div id="contact" class="map">
+        <!-- <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
+        <br />
+        <small>
+            <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
+        </small>
+        </iframe> -->
+    </div>
+    <!-- /Map -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                    <ul class="list-inline">
+                        <li><i class="fa fa-facebook fa-3x"></i>
+                        </li>
+                        <li><i class="fa fa-twitter fa-3x"></i>
+                        </li>
+                        <li><i class="fa fa-dribbble fa-3x"></i>
+                        </li>
+                    </ul>
+                    <div class="top-scroll">
+                        <a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
+                    </div>
+                    <hr>
+                    <p>Copyright &copy; Company 2013</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- /Footer -->
+
+    <!-- JavaScript -->
